@@ -14,11 +14,8 @@ import { Icon, chevronLeft } from '@wordpress/icons';
  */
 import { ROOT_MENU } from './constants';
 import { useNavigationContext } from './context';
-import {
-	MenuBackButtonUI,
-	MenuTitleUI,
-	MenuUI,
-} from './styles/navigation-styles';
+import NavigationMenuTitle from './menu-title';
+import { MenuBackButtonUI, MenuUI } from './styles/navigation-styles';
 
 export default function NavigationMenu( {
 	backButtonLabel,
@@ -49,15 +46,7 @@ export default function NavigationMenu( {
 				</MenuBackButtonUI>
 			) }
 			<MenuUI>
-				{ title && (
-					<MenuTitleUI
-						as="h2"
-						className="components-navigation__menu-title"
-						variant="subtitle"
-					>
-						{ title }
-					</MenuTitleUI>
-				) }
+				<NavigationMenuTitle title={ title } />
 				{ children }
 			</MenuUI>
 		</div>
