@@ -38,7 +38,7 @@ function Example() {
 				onActivateItem={ setActiveItem }
 				onActivateMenu={ setActiveMenu }
 			>
-				<NavigationMenu title="Home">
+				<NavigationMenu hasSearch title="Home">
 					<NavigationGroup title="Group 1">
 						<NavigationItem item="item-1" title="Item 1" />
 						<NavigationItem item="item-2" title="Item 2" />

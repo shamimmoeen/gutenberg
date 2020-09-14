@@ -20,3 +20,9 @@ export const NavigationContext = createContext( {
 	setActiveMenu: noop,
 } );
 export const useNavigationContext = () => useContext( NavigationContext );
+
+export const NavigationMenuContext = createContext( {
+	search: '',
+} );
+export const useNavigationMenuContext = () =>
+	useContext( NavigationMenuContext );
