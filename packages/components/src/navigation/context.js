@@ -18,5 +18,15 @@ export const NavigationContext = createContext( {
 	activeMenu: ROOT_MENU,
 	setActiveItem: noop,
 	setActiveMenu: noop,
+
+	navigationTree: {
+		items: {},
+		addItem: noop,
+		removeItem: noop,
+
+		menus: {},
+		addMenu: noop,
+		removeMenu: noop,
+	},
 } );
 export const useNavigationContext = () => useContext( NavigationContext );
