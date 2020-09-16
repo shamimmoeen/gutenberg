@@ -1,8 +1,10 @@
 /**
  * WordPress dependencies
  */
+import { Button } from '@wordpress/components';
 import { PostSavedState, PostPreviewButton } from '@wordpress/editor';
-import { useSelect } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { cog } from '@wordpress/icons';
 import {
 	PinnedItems,
 	__experimentalMainDashboardButton as MainDashboardButton,
@@ -17,15 +19,26 @@ import HeaderToolbar from './header-toolbar';
 import MoreMenu from './more-menu';
 import PostPublishButtonOrToggle from './post-publish-button-or-toggle';
 import { default as DevicePreview } from '../device-preview';
+import { __, sprintf } from '@wordpress/i18n';
 
 function Header( { setEntitiesSavedStatesCallback } ) {
 	const {
+		documentLabel,
 		hasActiveMetaboxes,
 		isPublishSidebarOpened,
 		isSaving,
 		showIconLabels,
-	} = useSelect(
-		( select ) => ( {
+	} = useSelect( ( select ) => {
+		const currentPostType = select( 'core/editor' ).getCurrentPostType();
+		const postType = select( 'core' ).getPostType( currentPostType );
+
+		return {
+			documentLabel:
+				// Disable reason: Post type labels object is shaped like this.
+				// eslint-disable-next-line camelcase
+				postType?.labels?.singular_name ??
+				// translators: Default label for the Document sidebar tab, not selected.
+				__( 'Document' ),
 			hasActiveMetaboxes: select( 'core/edit-post' ).hasMetaBoxes(),
 			isPublishSidebarOpened: select(
 				'core/edit-post'
@@ -34,9 +47,10 @@ function Header( { setEntitiesSavedStatesCallback } ) {
 			showIconLabels: select( 'core/edit-post' ).isFeatureActive(
 				'showIconLabels'
 			),
-		} ),
-		[]
-	);
+		};
+	}, [] );
+
+	const { openModal } = useDispatch( 'core/edit-post' );
 
 	const isLargeViewport = useViewportMatch( 'large' );
 
@@ -49,6 +63,19 @@ function Header( { setEntitiesSavedStatesCallback } ) {
 				<HeaderToolbar />
 			</div>
 			<div className="edit-post-header__settings">
+				<Button
+					label={ sprintf(
+						/* translators: %s: singular document type. */
+						__( '%s settings' ),
+						documentLabel
+					) }
+					icon={ cog }
+					isTertiary={ showIconLabels }
+					showTooltip={ ! showIconLabels }
+					onClick={ () => {
+						openModal( 'edit-post/post-settings' );
+					} }
+				/>
 				{ ! isPublishSidebarOpened && (
 					// This button isn't completely hidden by the publish sidebar.
 					// We can't hide the whole toolbar when the publish sidebar is open because
