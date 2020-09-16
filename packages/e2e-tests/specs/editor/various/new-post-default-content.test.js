@@ -5,9 +5,9 @@ import {
 	activatePlugin,
 	createNewPost,
 	deactivatePlugin,
-	findSidebarPanelToggleButtonWithTitle,
+	findDocumentSettingsSectionToggleWithTitle,
 	getEditedPostContent,
-	openDocumentSettingsSidebar,
+	openDocumentSettings,
 } from '@wordpress/e2e-test-utils';
 
 describe( 'new editor filtered state', () => {
@@ -32,8 +32,8 @@ describe( 'new editor filtered state', () => {
 		const content = await getEditedPostContent();
 
 		// open the sidebar, we want to see the excerpt.
-		await openDocumentSettingsSidebar();
-		const excerptButton = await findSidebarPanelToggleButtonWithTitle(
+		await openDocumentSettings();
+		const excerptButton = await findDocumentSettingsSectionToggleWithTitle(
 			'Excerpt'
 		);
 		if ( excerptButton ) {

@@ -5,9 +5,9 @@ import {
 	activatePlugin,
 	createNewPost,
 	deactivatePlugin,
-	findSidebarPanelToggleButtonWithTitle,
+	findDocumentSettingsSectionToggleWithTitle,
 	insertBlock,
-	openDocumentSettingsSidebar,
+	openDocumentSettings,
 	publishPost,
 	saveDraft,
 } from '@wordpress/e2e-test-utils';
@@ -92,8 +92,8 @@ describe( 'Meta boxes', () => {
 		await page.type( '.editor-post-title__input', 'A published post' );
 
 		// Open the excerpt panel
-		await openDocumentSettingsSidebar();
-		const excerptButton = await findSidebarPanelToggleButtonWithTitle(
+		await openDocumentSettings();
+		const excerptButton = await findDocumentSettingsSectionToggleWithTitle(
 			'Excerpt'
 		);
 		if ( excerptButton ) {

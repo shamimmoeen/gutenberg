@@ -3,12 +3,13 @@
  */
 import {
 	clickBlockAppender,
+	clickOnCloseModalButton,
 	createNewPost,
 	pressKeyWithModifier,
-	ensureSidebarOpened,
 	publishPost,
 	saveDraft,
-	openDocumentSettingsSidebar,
+	openBlockInspector,
+	openDocumentSettings,
 	isCurrentURL,
 } from '@wordpress/e2e-test-utils';
 
@@ -96,12 +97,12 @@ describe( 'Change detection', () => {
 		await page.type( '.editor-post-title__input', 'Hello World' );
 
 		// Toggle post as needing review (not persisted for autosave).
-		await ensureSidebarOpened();
-
+		await openDocumentSettings();
 		const postPendingReviewButton = (
 			await page.$x( "//label[contains(text(), 'Pending review')]" )
 		 )[ 0 ];
 		await postPendingReviewButton.click( 'button' );
+		await clickOnCloseModalButton();
 
 		// Force autosave to occur immediately.
 		await Promise.all( [
@@ -357,8 +358,10 @@ describe( 'Change detection', () => {
 		);
 
 		// Trash post.
-		await openDocumentSettingsSidebar();
-		await page.click( '.editor-post-trash.components-button' );
+		await openDocumentSettings();
+		const trashButtonSelector = '.editor-post-trash.components-button';
+		await page.waitForSelector( trashButtonSelector );
+		await page.click( trashButtonSelector );
 
 		await Promise.all( [
 			// Wait for "Saved" to confirm save complete.
@@ -378,8 +381,7 @@ describe( 'Change detection', () => {
 
 	it( 'consecutive edits to the same attribute should mark the post as dirty after a save', async () => {
 		// Open the sidebar block settings.
-		await openDocumentSettingsSidebar();
-		await page.click( '.edit-post-sidebar__panel-tab[data-label="Block"]' );
+		await openBlockInspector();
 
 		// Insert a paragraph.
 		await clickBlockAppender();

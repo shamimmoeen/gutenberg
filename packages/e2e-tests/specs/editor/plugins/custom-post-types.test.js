@@ -3,14 +3,18 @@
  */
 import {
 	activatePlugin,
+	clickOnCloseModalButton,
 	createNewPost,
 	deactivatePlugin,
+	openDocumentSettings,
 	publishPost,
-	findSidebarPanelWithTitle,
+	findDocumentSettingsSectionWithTitle,
 } from '@wordpress/e2e-test-utils';
-
 const openPageAttributesPanel = async () => {
-	const openButton = await findSidebarPanelWithTitle( 'Page Attributes' );
+	await openDocumentSettings();
+	const openButton = await findDocumentSettingsSectionWithTitle(
+		'Page Attributes'
+	);
 
 	// Get the classes from the panel
 	const buttonClassName = await (
@@ -52,6 +56,8 @@ describe( 'Test Custom Post Types', () => {
 			'.editor-page-attributes__parent select',
 			valueToSelect
 		);
+		// Close document settings modal.
+		await clickOnCloseModalButton();
 		await page.click( '.block-editor-writing-flow' );
 		await page.keyboard.type( 'Child Post' );
 		await publishPost();
